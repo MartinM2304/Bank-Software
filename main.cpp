@@ -40,9 +40,9 @@ int main()
     case 'q':
         cout << "Thank you for the use!";
         return 0;
-        break;
-
     default:
+        cout<< "Enter valid letter";
+        main();
         break;
     }
 }
@@ -55,8 +55,11 @@ void login()
     system("cls");
     ifstream input("users.txt");
     hash<string> hash_obj;
+    string line;
 
     string userId, password, fileId, filePass;
+    int balance =0;
+    string tempBalance;
     bool match;
 
     cout << centerTabs << "Please enter your username "<<endl;
@@ -64,20 +67,15 @@ void login()
     cout << centerTabs << "Please enter your  password"<<endl;
     cin >> password;
 
-    while (input>>fileId>>filePass)
-    {
-        getline(input, fileId, ':');
-        if (userId == fileId)
-        {
-            getline(input, filePass, ':');
+    int hashedPassword = Hasher(password);
 
-            Hasher(password);
-            
-            if ( password == filePass)
-            {
-                Menu();
-            }
-        }
+    getline(input,line);
+
+    while (getline(input, line))
+    {
+        separateTheLine(line, fileId, filePass,tempBalance);
+
+
     }
     cout <<centerTabs<< "Wrong password"<<endl
          <<centerTabs<<"Do u want to continue?";
@@ -115,6 +113,14 @@ void registration()
     main();
 }
 
+int stringToInt(string str){
+    int  result =0;
+    for( char ch: str){
+       result = result*10 + ch- '0';
+    }
+    return result;
+}
+
 int Hasher(string& password)
 {
     unsigned int hashedPassword;
@@ -125,6 +131,35 @@ int Hasher(string& password)
 
 
     return hashedPassword;
+}
+
+void separateTheLine(string line, string &username,string &password,string &balance){
+
+int counterOfTwoDots = 0;
+
+    for(int i=0, j=0;line[i] != '\0';i++){
+        char temp = line[i];
+        if(temp == ':'){
+            counterOfTwoDots++;
+            j=0;
+            continue;
+        }
+        if(counterOfTwoDots==0){
+            username.push_back(temp);
+            //username[i] = temp;
+        }
+        if(counterOfTwoDots==1){
+            password.push_back(temp);
+            //password[j] = temp;
+            j++;
+        }
+        if(counterOfTwoDots ==2){
+            balance.push_back(temp);
+            //balance[j] = temp;
+            j++;
+        }
+
+    }
 }
 
 
