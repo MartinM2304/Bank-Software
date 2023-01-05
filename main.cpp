@@ -1,16 +1,21 @@
 #include <iostream>
 #include <fstream>
-#include <string.h>
-#include <windows.h>
 #include "functions.h"
-using namespace std;
+using  namespace  std;
 
-const string centerTabs = "\t\t\t\t\t\t\t   ", halfOfCenterTabs = "\t\t\t\t\t   ";
+const string centerTabs = "\t\t\t\t\t\t   ";
+const string FILE_NAME = "users.txt";
+int fileLengthInLines =0;
 
-int main()
-{
+int main(){
 
     char choice;
+    fileLengthInLines = fileLength();
+
+    string *usernames = new string[fileLengthInLines+1];
+    string *passwords = new string[fileLengthInLines+1];
+    double *balances = new double[fileLengthInLines+1];
+    fillInformation(usernames,passwords,balances);
 
     cout << endl;
     cout << centerTabs << "Please choose one of the following:" << endl;
@@ -22,32 +27,39 @@ int main()
 
     switch (choice)
     {
-    case 'L':
-        Login();
-        break;
-    case 'l':
-        Login();
-        break;
-    case 'R':
-        Registration();
-        break;
-    case 'r':
-        Registration();
-        break;
-    case 'Q':
-        cout << "Thank you for the use!";
-        return 0;
-    case 'q':
-        cout << "Thank you for the use!";
-        return 0;
-    default:
-        cout << "Enter valid letter";
-        main();
-        break;
+        case 'L':
+            Login(usernames,passwords,balances);
+            break;
+        case 'l':
+            Login(usernames,passwords,balances);
+            break;
+        case 'R':
+            Registration(usernames,passwords,balances);
+            break;
+        case 'r':
+            Registration(usernames,passwords,balances);
+            break;
+        case 'Q':
+            cout << "Thank you for the use!";
+            break;
+        case 'q':
+            cout << "Thank you for the use!";
+            break;
+        default:
+            cout << "Enter valid letter";
+            main();
+            break;
     }
+    exitApp(usernames,passwords,balances);
+
+    delete[] usernames;
+    delete[] passwords;
+    delete[] balances;
+
+    return 0;
 }
-void Menu(int lineIndex)
-{
+void Menu(int userIndex,string*usernames,string*passowords,double*balances){
+
     char choice;
 
     cout << endl;
@@ -62,217 +74,303 @@ void Menu(int lineIndex)
 
     switch (choice)
     {
-    case 'D':
-        Deposit(lineIndex);
-        break;
-    case 'd':
-        Deposit(lineIndex);
-        break;
-    case 'W':
-        Withdraw(lineIndex);
-        break;
-    case 'w':
-        Withdraw(lineIndex);
-        break;
-    case 'T':
-        Transfer(lineIndex);
-        break;
-    case 't':
-        Transfer(lineIndex);
-        break;
-    case 'C':
-        DeleteAccount(lineIndex);
-        break;
-    case 'c':
-        DeleteAccount(lineIndex);
-        break;
-    case 'L':
-        main();
-        break;
-    case 'l':
-        main();
-        break;
+        case 'D':
+            Deposit(userIndex,usernames,passowords,balances);
+            break;
+        case 'd':
+            Deposit(userIndex,usernames,passowords,balances);
+            break;
+        case 'W':
+            Withdraw(userIndex,usernames,passowords,balances);
+            break;
+        case 'w':
+            Withdraw(userIndex,usernames,passowords,balances);
+            break;
+        case 'T':
+            Transfer(userIndex,usernames,passowords,balances);
+            break;
+        case 't':
+            Transfer(userIndex,usernames,passowords,balances);
+            break;
+        case 'C':
+            DeleteAccount(userIndex,usernames,passowords,balances);
+            break;
+        case 'c':
+            DeleteAccount(userIndex,usernames,passowords,balances);
+            break;
+        case 'L':
+            exitApp(usernames,passowords,balances);
+            main();
+            break;
+        case 'l':
+            exitApp(usernames,passowords,balances);
+            main();
+            break;
+        default:
+            cout<<"Enter a valid letter";
+            Menu(userIndex,usernames,passowords,balances);
     }
 }
+//Register and Login
+void Login(string*usernames,string*passowords,double*balances){
 
-void Login()
-{
-    system("cls");
-    ifstream input("users.txt");
-    string line;
 
-    string userId, password, fileId, filePass;
-    string balance;
+    string username,password;
+    string fileUsername,filePassword,fileBalance;
     bool match;
-    hash<string> hasher;
+    int userIndex;
+    hash<string>hasher;
 
-    cout << centerTabs << "Please enter your username " << endl;
-    cin >> userId;
-    cout << centerTabs << "Please enter your  password" << endl;
-    cin >> password;
-
+    cout<<"Enter your username"<<endl;
+    cin>>username;
+    cout<<"Enter your password"<<endl;
+    cin>>password;
     string hashedPassword = to_string(hasher(password));
-    //this is the index of the line with the users information
-    int lineIndex =0;
-
-    while (getline(input, line))
-    {
-        separateTheLine(line, fileId, filePass, balance);
-
-        // cout<< fileId<<endl<<filePass<<endl;
-        // cout<< hashedPassword<<endl;
-
-        if (userId == fileId)
-        {
-            if (hashedPassword == filePass)
-            {
-                cout << "Login succesful";
-                input.close();
-                Menu(lineIndex);
+    for(int i=0;i<fileLengthInLines;i++){
+        fileUsername = usernames[i];
+        filePassword= passowords[i];
+        if(username==fileUsername){
+            if(filePassword== hashedPassword){
+                cout<<"Login succesful";
+                userIndex =i;
+                Menu(userIndex,usernames,passowords,balances);
+            }else{
+                cout<<"Wrong password,try again"<<endl;
+                Login(usernames,passowords,balances);
             }
         }
-        lineIndex++;
     }
-    cout << "Wrong password, try again";
-    Login();
+    cout<<"Username doesnt exist, please try again"<<endl;
+    Login(usernames,passowords,balances);
+
+
 }
-void Registration()
-{
+void Registration(string*usernames,string*passowords,double*balances){
 
     system("cls");
-    string userId, password, password2, rId, rPass;
+    string username,password,repeatPassword;
     hash<string> hasher;
 
-    cout << centerTabs << "Enter the username you want to use: " << endl;
-    cin >> userId;
-
-    while (!isUsernameFree(userId))
-    {
-        cout << "Username is taken, try another";
-        cin >> userId;
+    cout<<centerTabs<<"Enter the username you want to use: "<<endl;
+    cin>>username;
+    while (!isUsernameFree(username)){
+        cout<<centerTabs<<"Username is taken, try another"<<endl;
+        cin>>username;
     }
-
-    cout << centerTabs << "Enter the password you want to use: " << endl;
-    cin >> password;
+    cout<<centerTabs<<"Enter the password you want to use:"<<endl;
+    cin>>password;
 
     while (!passwordChecker(password))
     {
         cout << "Your password must be at least 5 characters long and have at least 1 Capital letter, 1 lowerCase letter and 1 symbol " << endl;
         cin >> password;
     }
-
     cout << centerTabs << "Repeat the password: " << endl;
-    cin >> password2;
-    while (password != password2)
+    cin >> repeatPassword;
+    while (password != repeatPassword)
     {
-        cout << "The second password NE SUVPADA S PURVATA" << endl;
-        cin >> password2;
+        cout << "The second password doesnt match" << endl;
+        cin >> repeatPassword;
     }
-
-    ofstream input("users.txt");
-    input << userId << ':' << hasher(password) << ':' << "0" << endl;
-    input.close();
+    usernames[fileLengthInLines]= username;
+    passowords[fileLengthInLines] = to_string(hasher(password));
+    balances[fileLengthInLines] = 0;
+    fileLengthInLines++;
 
     system("cls");
-    cout << centerTabs << " Registration is succesful !" << endl;
+    cout<<centerTabs<<"Registration is succesful!"<<endl;
+    exitApp(usernames,passowords,balances);
     main();
 }
-void Deposit(int lineIndex)
-{
 
-    string username,password,tempBalance;
-    fstream file("users.txt");
-    fstream temp("temp.txt");
-    string line;
+//Menu Functions
+void Deposit(int userIndex,string*usernames,string*passowords,double*balances){
 
-    double deposit;
-    cout << "Enter the ammount of money you want to deposit" << endl;
-    cin >> deposit;
+    double balance= balances[userIndex];
+    double depositAmount;
+    cout<<"Enter the amount you want to deposit"<<endl;
+    cin>>depositAmount;
+    while (depositAmount<=0){
+        cout<<"Enter a valid amount"<<endl;
+        cin>>depositAmount;
+    }
+    balance+=depositAmount;
+    balances[userIndex] = balance;
+    Menu(userIndex,usernames,passowords,balances);
+}
+void Withdraw(int userIndex,string*usernames,string*passowords,double*balances){
 
-    for(int i=0 ;i<=lineIndex;i++){
-        getline(file,line);
+    double balance= balances[userIndex];
+    double withdrawAmount;
+    cout<<"Enter the amount you want to withdraw"<<endl;
+    cin>>withdrawAmount;
+    while (withdrawAmount<=0){
+        cout<<"Enter a valid amount"<<endl;
+        cin>>withdrawAmount;
+    }
+    while (balance+10000<withdrawAmount){
+        cout<<"You dont have that much money."<<endl;
+        cin>>withdrawAmount;
+    }
+    balance-=withdrawAmount;
+    balances[userIndex] = balance;
+    Menu(userIndex,usernames,passowords,balances);
 
-        if(i == lineIndex){
-        
-            separateTheLine(line, username,password,tempBalance);
-            line.clear();
-            double balance = stringToDouble(tempBalance);
-            balance+= deposit;
+}
+void Transfer(int userIndex,string*usernames,string*passowords,double*balances){
 
-            //cout<<username<<":"<< password<<":"<<balance<<endl;
-            temp<<username<<":"<< password<<":"<<balance<<endl;
-        }else{
-            temp<<line<<endl;
+    double transferAmount=0;
+    string transferUsername,transferBalance;
+    double balanceOfUser = balances[userIndex];
+    double balanceOfReciever;
+    string UsernameYouWantToTransfer;
+
+    cout<<"Enter the account you want to transfer money"<<endl;
+    cin>>UsernameYouWantToTransfer;
+
+    for(int i=0;i<fileLengthInLines;i++){
+        transferUsername = usernames[i];
+
+        if(UsernameYouWantToTransfer == transferUsername){
+            balanceOfReciever= balances[i];
+
+            cout<<"Enter the amount you want to transfer."<<endl;
+            cin>>transferAmount;
+
+            while (transferAmount<=0){
+                cout<<"Enter a correct amount"<<endl;
+                cin>>transferAmount;
+            }
+            while (balanceOfUser+10000<transferAmount)
+            {
+                cout<<"You can't transfer that much. Enter a valid ammount"<<endl;
+                cin>>transferAmount;
+            }
+            balanceOfUser-= transferAmount;
+            balanceOfReciever+= transferAmount;
+
+            balances[i] = balanceOfReciever;
+            balances[userIndex]= balanceOfUser;
+
+            cout<<"The transfer was succesful"<<endl;
+            Menu(userIndex,usernames,passowords,balances);
+
+
         }
     }
+    cout<<"The username doesnt exist, try again";
+    Menu(userIndex,usernames,passowords,balances);
 
-    overwriteFile("users.txt","temp.txt",lineIndex);
-    cout<<"The deposit was succesful";
-
-    Menu(lineIndex);
 }
-void Withdraw(int lineIndex)
-{
-    string username,password,tempBalance;
-    fstream file("users.txt");
-    fstream temp("temp.txt");
-    string line;
+void DeleteAccount(int userIndex,string*usernames,string*passowords,double*balances){
 
-    double deposit;
-    cout << "Enter the ammount of money you want to withdraw" << endl;
-    cin >> deposit;
+    hash<string > hasher;
 
-    for(int i=0 ;i<=lineIndex;i++){
-        getline(file,line);
+    string password = passowords[userIndex];
+    string enteredPassword;
+    cout<<"Enter your password"<<endl;
+    cin>>enteredPassword;
+    string hashedPassword = to_string(hasher(enteredPassword));
 
-        if(i == lineIndex){
-
-            separateTheLine(line, username,password,tempBalance);
-            line.clear();
-            double balance = stringToDouble(tempBalance);
-            balance-= deposit;
-
-            //cout<<username<<":"<< password<<":"<<balance<<endl;
-            temp<<username<<":"<< password<<":"<<balance<<endl;
-        }else{
-            temp<<line<<endl;
-        }
+    if(hashedPassword!=password){
+        cout<<"Wrong password"<<endl;
+        Menu(userIndex,usernames,passowords,balances);
     }
 
-    overwriteFile("users.txt","temp.txt",lineIndex);
-    cout<<"The deposit was succesful";
+    string *tempUsernames = new string[fileLengthInLines];
+    string *tempPasswords = new string[fileLengthInLines];
+    double *tempBalances = new double [fileLengthInLines];
 
-    Menu(lineIndex);
+    for(int i=0,j=0;i<fileLengthInLines;i++){
+        if(i==userIndex){
+
+        }else{
+            tempUsernames[j]=usernames[i];
+            tempPasswords[j] = passowords[i];
+            tempBalances[j]= balances[i];
+            j++;
+        }
+    }
+    fileLengthInLines--;
+    for(int i=0;i<fileLengthInLines;i++){
+        usernames[i]=tempUsernames[i];
+        passowords[i]=tempPasswords[i];
+        balances[i]=tempBalances[i];
+    }
+    main();
+
 }
-void Transfer(int lineIndex)
-{
-}
-void DeleteAccount(int lineIndex)
-{
-}
-void overwriteFile(string name, string tempName,int lineIndex){
-    ofstream file(name);
-    fstream temp(tempName);
+
+//File Handling
+void fillInformation(string*usernames,string*passwords,double*balances){
+    ifstream file(FILE_NAME);
     string line;
+    string tempUsername,tempPassword,tempBalance;
+    double balance;
 
-    for(int i=0 ; i<= lineIndex;i++){
-        getline(temp,line);
-        file<<line;
-        
+    for(int i=0;i<fileLengthInLines;i++){
+        getline(file,line);
+
+        separateTheLine(line,tempUsername,tempPassword,tempBalance);
+        balance = stringToDouble(tempBalance);
+        usernames[i]=tempUsername;
+        passwords[i] = tempPassword;
+        balances[i] = balance;
     }
     file.close();
-    temp.close();
+}
+void separateTheLine(string line, string &username, string &password, string &balance)
+{
+    username.clear();
+    password.clear();
+    balance.clear();
+
+    int counterOfTwoDots = 0;
+
+    for (int i = 0, j = 0; line[i] != '\0'; i++)
+    {
+        char temp = line[i];
+        if (temp == ':')
+        {
+            counterOfTwoDots++;
+            j = 0;
+            continue;
+        }
+        if (counterOfTwoDots == 0)
+        {
+            username.push_back(temp);
+        }
+        if (counterOfTwoDots == 1)
+        {
+            password.push_back(temp);
+            j++;
+        }
+        if (counterOfTwoDots == 2)
+        {
+            balance.push_back(temp);
+            j++;
+        }
+    }
+}
+int fileLength(){
+    int counterOfLines =0;
+
+    ifstream file(FILE_NAME);
+    string line;
+    while (getline(file,line)){
+        counterOfLines++;
+    }
+    return counterOfLines;
+}
+void exitApp(string*usernames,string*passwords,double*balances){
+    ofstream file(FILE_NAME);
+    for(int i=0;i<fileLengthInLines;i++){
+        file<<usernames[i]<<':'<<passwords[i]<<':'<<balances[i]<<endl;
+    }
+    file.close();
 }
 
-unsigned stringToInt(string str)
-{
-    unsigned result = 0;
-    for (char ch : str)
-    {
-        result = result * 10 + ch - '0';
-    }
-    return result;
-}
+//for numbers
 int numbersAfterComa(string str){
     bool coma = false;
     int counter =0;
@@ -309,50 +407,9 @@ double stringToDouble(string str)
 
 }
 
-string intToString(int n)
-{
-    string str = to_string(n);
-    return str;
-}
 
 
-void separateTheLine(string line, string &username, string &password, string &balance)
-{
-    username.clear();
-    password.clear();
-    balance.clear();
-
-    int counterOfTwoDots = 0;
-
-    for (int i = 0, j = 0; line[i] != '\0'; i++)
-    {
-        char temp = line[i];
-        if (temp == ':')
-        {
-            counterOfTwoDots++;
-            j = 0;
-            continue;
-        }
-        if (counterOfTwoDots == 0)
-        {
-            username.push_back(temp);
-            // username[i] = temp;
-        }
-        if (counterOfTwoDots == 1)
-        {
-            password.push_back(temp);
-            // password[j] = temp;
-            j++;
-        }
-        if (counterOfTwoDots == 2)
-        {
-            balance.push_back(temp);
-            // balance[j] = temp;
-            j++;
-        }
-    }
-}
-
+//For passwords:
 bool passwordChecker(string password)
 {
 
@@ -399,7 +456,7 @@ bool passwordChecker(string password)
 bool isUsernameFree(string username)
 {
 
-    ifstream file1("users.txt");
+    ifstream file1(FILE_NAME);
     string fileUsername, password, balance;
     string line;
     while (getline(file1, line))

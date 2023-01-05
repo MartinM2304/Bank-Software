@@ -1,24 +1,25 @@
-#ifndef FUNCTION_H
-#define FUNCTION_H
+#ifndef FUNCTIONS_H
+#define FUNCTIONS_H
 
-#include <iostream>
-#include <string>
 int main();
 void Menu(int lineIndex);
-void Login();
-void Registration();
-bool isUsernameFree(std::string username);
-void Deposit(int lineIndex);
-void Withdraw(int lineIndex);
-void Transfer(int lineIndex);
-void DeleteAccount(int lineIndex);
-void passwordHasher(std::string password);
-bool passwordChecker(std::string password);
-int passwordLength(std::string password);
-unsigned stringToInt(std::string str);
-double stringToDouble(std::string str);
-void overwriteFile(std::string name, std::string tempName,int lineIndex);
+void Login(std::string*usernames,std::string*passowords,double*balances);
+void Registration(std::string*usernames,std::string*passowords,double*balances);
+
+void fillInformation(std::string*usernames,std::string*passwords,double*balances);
+void exitApp(std::string*usernames,std::string*passwords,double*balances);
+
+void Deposit(int userIndex,std::string*usernames,std::string*passowords,double*balances);
+void Withdraw(int userIndex,std::string*usernames,std::string*passowords,double*balances);
+void Transfer(int userIndex,std::string*usernames,std::string*passowords,double*balances);
+void DeleteAccount(int userIndex,std::string*usernames,std::string*passowords,double*balances);
+
 void separateTheLine(std::string line, std::string &username,std::string &password,std::string &balance);
-std::string intToString(int n);
+double stringToDouble(std::string str);
+int fileLength();
+
+bool passwordChecker(std::string password);
+bool isUsernameFree(std::string username);
+int passwordLength(std::string password);
 
 #endif
