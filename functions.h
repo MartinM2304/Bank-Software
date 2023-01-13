@@ -18,6 +18,9 @@ void separateTheLine(std::string line, std::string &username,std::string &passwo
 double stringToDouble(std::string str);
 int fileLength();
 
+int numbersAfterComa(std::string str);
+double roundNumber(double a);
+
 bool passwordChecker(std::string password);
 bool isUsernameFree(std::string username);
 int passwordLength(std::string password);
