@@ -494,6 +494,7 @@ int fileLength() {
     while (getline(file, line)) {
         counterOfLines++;
     }
+    file.close();
     return counterOfLines;
 }
 
