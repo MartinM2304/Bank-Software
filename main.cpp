@@ -1,3 +1,19 @@
+/**
+*
+* Solution to course project # 3
+* Introduction to programming course
+* Faculty of Mathematics and Informatics of Sofia University
+* Winter semester 2022/2023
+*
+* @author Martin Petrov Matinkov
+* @idnumber 5MI0600202
+* @compiler gcc (I use CLion)
+*
+* Bank software
+*
+*/
+
+
 #include <iostream>
 #include <fstream>
 #include <string>
@@ -5,30 +21,30 @@
 
 using namespace std;
 
-const string CENTERINGTABS = "\t\t\t\t\t\t   ";
+const string CENTERING_TABS = "\t\t\t\t\t\t   ";
 const string FILE_NAME = "users.txt";
 int fileLengthInLines = 0;
-const string ENTERMINUS1TOEXIT="Enter -1 if you want to go back";
+const string ENTER_MINUS_1_TO_EXIT = "Enter -1 if you want to go back";
 
 
 void startingMenu() {
 
     string *usernames = new string[fileLengthInLines + 1];
     string *passwords = new string[fileLengthInLines + 1];
-    double *balances = new double[fileLengthInLines + 1] ;
+    double *balances = new double[fileLengthInLines + 1];
     fillInformation(usernames, passwords, balances);
 
     char choice;
 
-    while (choice!='q'&&choice!='Q'){
+    while (choice != 'q' && choice != 'Q') {
 
         system("cls");
-        cout << CENTERINGTABS << "Please choose one of the following:" << endl;
-        cout << CENTERINGTABS << "L - login" << endl;
-        cout << CENTERINGTABS << "R - register" << endl;
-        cout << CENTERINGTABS << "Q -quit" << endl;
+        cout << CENTERING_TABS << "Please choose one of the following: " << endl;
+        cout << CENTERING_TABS << "L - login" << endl;
+        cout << CENTERING_TABS << "R - register" << endl;
+        cout << CENTERING_TABS << "Q - quit" << endl;
 
-        cin>>choice;
+        cin >> choice;
 
         switch (choice) {
             case 'L':
@@ -44,13 +60,13 @@ void startingMenu() {
                 Registration(usernames, passwords, balances);
                 break;
             case 'q':
-                cout << "Thank you for the use!";
+                cout << "Thank you for the use! "<< endl;
                 break;
             case 'Q':
-                cout << "Thank you for the use!";
+                cout << "Thank you for the use! "<< endl;
                 break;
             default:
-                cout << "Enter Valid letter"<<endl;
+                cout << "Enter Valid letter " << endl;
         }
 
 
@@ -61,26 +77,27 @@ void startingMenu() {
     delete[] passwords;
     delete[] balances;
 
-    exit(0 );
+    exit(0);
 
 }
-int main(){
 
-    fileLengthInLines= fileLength();
+int main() {
 
-    cout<<CENTERINGTABS<<"#      #         #####           ####"<<endl;
-    cout<<CENTERINGTABS<<"#     #          #    #         #    #"<<endl;
-    cout<<CENTERINGTABS<<"#    #           #    #         #"<<endl;
-    cout<<CENTERINGTABS<<"#   #            #    #         #"<<endl;
-    cout<<CENTERINGTABS<<"#  #             #   #          #"<<endl;
-    cout<<CENTERINGTABS<<"# #              #  #           #"<<endl;
-    cout<<CENTERINGTABS<<"#                # #            #"<<endl;
-    cout<<CENTERINGTABS<<"# #              #  #           #"<<endl;
-    cout<<CENTERINGTABS<<"#  #             #   #          #"<<endl;
-    cout<<CENTERINGTABS<<"#   #            #    #         #"<<endl;
-    cout<<CENTERINGTABS<<"#    #           #    #         #"<<endl;
-    cout<<CENTERINGTABS<<"#     #          #    #         #    #"<<endl;
-    cout<<CENTERINGTABS<<"#      #         #####           ####"<<endl;
+    fileLengthInLines = fileLength();
+
+    cout << CENTERING_TABS << "#      #         #####           ####" << endl;
+    cout << CENTERING_TABS << "#     #          #    #         #    #" << endl;
+    cout << CENTERING_TABS << "#    #           #    #         #" << endl;
+    cout << CENTERING_TABS << "#   #            #    #         #" << endl;
+    cout << CENTERING_TABS << "#  #             #   #          #" << endl;
+    cout << CENTERING_TABS << "# #              #  #           #" << endl;
+    cout << CENTERING_TABS << "#                # #            #" << endl;
+    cout << CENTERING_TABS << "# #              #  #           #" << endl;
+    cout << CENTERING_TABS << "#  #             #   #          #" << endl;
+    cout << CENTERING_TABS << "#   #            #    #         #" << endl;
+    cout << CENTERING_TABS << "#    #           #    #         #" << endl;
+    cout << CENTERING_TABS << "#     #          #    #         #    #" << endl;
+    cout << CENTERING_TABS << "#      #         #####           ####" << endl;
 
     startingMenu();
 
@@ -88,17 +105,18 @@ int main(){
     return 0;
 
 }
+
 void Menu(int userIndex, string *usernames, string *passowords, double *balances) {
 
     char choice;
 
     cout << endl;
-    cout << CENTERINGTABS << "Please choose one of the following:" << endl;
-    cout << CENTERINGTABS << "D - deposit" << endl;
-    cout << CENTERINGTABS << "W - withdraw" << endl;
-    cout << CENTERINGTABS << "T -transfer" << endl;
-    cout << CENTERINGTABS << "C -cancel account" << endl;
-    cout << CENTERINGTABS << "L -logout" << endl;
+    cout << CENTERING_TABS << "Please choose one of the following:" << endl;
+    cout << CENTERING_TABS << "D - deposit" << endl;
+    cout << CENTERING_TABS << "W - withdraw" << endl;
+    cout << CENTERING_TABS << "T - transfer" << endl;
+    cout << CENTERING_TABS << "C - cancel account" << endl;
+    cout << CENTERING_TABS << "L - logout" << endl;
 
     cin >> choice;
 
@@ -144,7 +162,9 @@ void Menu(int userIndex, string *usernames, string *passowords, double *balances
 //Register and Login
 void Login(string *usernames, string *passwords, double *balances) {
 
-    cout<<CENTERINGTABS<<ENTERMINUS1TOEXIT<<endl;
+    system("cls");
+
+    cout << CENTERING_TABS << ENTER_MINUS_1_TO_EXIT << endl;
 
     hash<string> hasher;
     string username, password;
@@ -154,25 +174,22 @@ void Login(string *usernames, string *passwords, double *balances) {
     cout << "Enter your username" << endl;
     cin >> username;
 
-    if(username == "-1"){
+    if (username == "-1") {
         return;
     }
     cout << "Enter your password" << endl;
     cin >> password;
-    if(password=="-1"){
+    if (password == "-1") {
         return;
     }
-    //cout << hasher(password) << " " << to_string(hasher(password)) << endl;
-
     string hashedPassword = to_string(hasher(password));
 
     for (int i = 0; i < fileLengthInLines; i++) {
         fileUsername = usernames[i];
         filePassword = passwords[i];
         if (username == fileUsername) {
-            //cout << hashedPassword << endl << filePassword << endl;
             if (filePassword == hashedPassword) {
-                cout << "Login succesful";
+                cout << "Login succesful"<<endl;
                 userIndex = i;
                 Menu(userIndex, usernames, passwords, balances);
             } else {
@@ -194,18 +211,23 @@ void Registration(string *usernames, string *passowords, double *balances) {
     hash<string> hasher;
 
 
-    cout << CENTERINGTABS << "Enter the username you want to use: " << endl;
-    cout<<CENTERINGTABS<<"The username cant contain spaces "<<endl;
+    cout << CENTERING_TABS << "Enter the username you want to use: " << endl;
+    cout << CENTERING_TABS << "The username cant contain spaces " << endl;
     cin >> username;
 
-    if(username=="-1"){
+    if (username == "-1") {
         return;
     }
-    while (!isUsernameFree(usernames,username)) {
-        cout << CENTERINGTABS << "Username is taken, try another" << endl;
+
+    while (usernameContainOnlySpaces(username) || username==""){
+        cout<<"Enter a valid username"<<endl;
+        cin>>username;
+    }
+    while (!isUsernameFree(usernames, username)) {
+        cout << CENTERING_TABS << "Username is taken, try another" << endl;
         cin >> username;
     }
-    cout << CENTERINGTABS << "Enter the password you want to use:" << endl;
+    cout << CENTERING_TABS << "Enter the password you want to use:" << endl;
     cin >> password;
 
     while (!passwordChecker(password)) {
@@ -214,7 +236,7 @@ void Registration(string *usernames, string *passowords, double *balances) {
                 << endl;
         cin >> password;
     }
-    cout << CENTERINGTABS << "Repeat the password: " << endl;
+    cout << CENTERING_TABS << "Repeat the password: " << endl;
     cin >> repeatPassword;
     while (password != repeatPassword) {
         cout << "The second password doesnt match" << endl;
@@ -226,7 +248,7 @@ void Registration(string *usernames, string *passowords, double *balances) {
     fileLengthInLines++;
 
     system("cls");
-    cout << CENTERINGTABS << "Registration is succesful!" << endl;
+    cout << CENTERING_TABS << "Registration is succesful!" << endl;
 
     exitApp(usernames, passowords, balances);
 
@@ -250,7 +272,8 @@ void Deposit(int userIndex, string *usernames, string *passowords, double *balan
     }
     balance += depositAmount;
     balances[userIndex] = balance;
-    cout<<"The deposit was succesful.";
+    cout << "The deposit was succesful."<<endl;
+    cout<< "You deposited "<<depositAmount<<endl;
     Menu(userIndex, usernames, passowords, balances);
 }
 
@@ -261,7 +284,7 @@ void Withdraw(int userIndex, string *usernames, string *passowords, double *bala
     cout << "Enter the amount you want to withdraw" << endl;
     cin >> withdrawAmount;
 
-    withdrawAmount= roundNumber(withdrawAmount);
+    withdrawAmount = roundNumber(withdrawAmount);
 
     while (withdrawAmount <= 0) {
         cout << "Enter a valid amount" << endl;
@@ -269,11 +292,11 @@ void Withdraw(int userIndex, string *usernames, string *passowords, double *bala
     }
     if (balance + 10000 < withdrawAmount) {
         cout << "You dont have that much money." << endl;
-        Menu(userIndex,usernames,passowords,balances);
+        Menu(userIndex, usernames, passowords, balances);
     }
     balance -= withdrawAmount;
     balances[userIndex] = balance;
-    cout<<"The withdraw was succesful!";
+    cout << "The withdraw was succesful!";
     Menu(userIndex, usernames, passowords, balances);
 
 }
@@ -324,14 +347,15 @@ void Transfer(int userIndex, string *usernames, string *passowords, double *bala
 
 }
 
-void clearArray(double *arr){
-    for(int i=0;i<fileLengthInLines;i++){
-        arr[i]=0;
+void clearArray(double *arr) {
+    for (int i = 0; i < fileLengthInLines; i++) {
+        arr[i] = 0;
     }
 }
-void clearArray(string *arr){
-    for(int i=0;i<fileLengthInLines;i++){
-        arr[i]="";
+
+void clearArray(string *arr) {
+    for (int i = 0; i < fileLengthInLines; i++) {
+        arr[i] = "";
     }
 }
 
@@ -350,14 +374,15 @@ void DeleteAccount(int userIndex, string *usernames, string *passowords, double 
         Menu(userIndex, usernames, passowords, balances);
     }
 
-    string *tempUsernames = new string[fileLengthInLines+1];
-    string *tempPasswords = new string[fileLengthInLines+1];
-    double *tempBalances = new double[fileLengthInLines+1];
+    string *tempUsernames = new string[fileLengthInLines + 1];
+    string *tempPasswords = new string[fileLengthInLines + 1];
+    double *tempBalances = new double[fileLengthInLines + 1];
 
     for (int i = 0, j = 0; i < fileLengthInLines; i++) {
         if (i == userIndex) {
 
-        } else {
+        } else
+        {
             tempUsernames[j] = usernames[i];
             tempPasswords[j] = passowords[i];
             tempBalances[j] = balances[i];
@@ -374,7 +399,7 @@ void DeleteAccount(int userIndex, string *usernames, string *passowords, double 
         passowords[i] = tempPasswords[i];
         balances[i] = tempBalances[i];
     }
-    exitApp(usernames,passowords,balances);
+    exitApp(usernames, passowords, balances);
     main();
 
 }
@@ -467,7 +492,7 @@ double stringToDouble(string str) {
 
 
     for (int i = 0; str[i] != '\0'; i++) {
-        if (str[i] == '.' || str[i] == ','||str[i]=='-') {
+        if (str[i] == '.' || str[i] == ',' || str[i] == '-') {
             continue;
         }
         number = number * 10 + (str[i] - '0') * 10;
@@ -481,17 +506,18 @@ double stringToDouble(string str) {
         digitsAfterComa--;
     }
 
-    if(str[0]=='-') {
+    if (str[0] == '-') {
         return -number;
-    }else{
+    } else
+    {
         return number;
     }
 }
 
-double roundNumber(double a){
+double roundNumber(double a) {
 
-    int c = (int)(a * 100 + 0.5);
-    float b = c/100.0;
+    int c = (int) (a * 100 + 0.5);
+    float b = c / 100.0;
     return b;
 }
 
@@ -509,28 +535,41 @@ bool passwordChecker(string password) {
         char temp = password[i];
         if (temp >= 'a' && temp <= 'z') {
             lowerCaseCounter++;
-        } else if (temp >= 'A' && temp <= 'Z') {
+        }
+        else if (temp >= 'A' && temp <= 'Z') {
             upperCaseCounter++;
-        } else if (temp == '!' || temp == '@' || temp == '#' || temp == '$' || temp == '%' || temp == '^' ||
-                   temp == '&' || temp == '*'||temp == '_') {
+        }
+        else if (temp == '!' || temp == '@' || temp == '#' || temp == '$' || temp == '%' || temp == '^' ||
+                   temp == '&' || temp == '*' || temp == '_') {
             symbolCounter++;
-        } else if (temp >= '0' && temp <= '9') {
-        } else {
+        }
+        else if (temp >= '0' && temp <= '9') {
+        }
+        else {
             return false;
         }
         i++;
     }
     if (lowerCaseCounter > 0 && upperCaseCounter > 0 && symbolCounter > 0) {
         return true;
-    } else {
+    } else
+    {
         return false;
     }
 }
 
-bool isUsernameFree(const string* usernames,const string username){
+bool isUsernameFree(const string *usernames, const string username) {
 
-    for(int i=0;i<fileLengthInLines;i++){
-        if(usernames[i]==username){
+    for (int i = 0; i < fileLengthInLines; i++) {
+        if (usernames[i] == username) {
+            return false;
+        }
+    }
+    return true;
+}
+bool usernameContainOnlySpaces(string username){
+    for(char ch:username){
+        if(ch !=' '){
             return false;
         }
     }
