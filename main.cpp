@@ -1,5 +1,6 @@
 #include <iostream>
 #include <fstream>
+#include <string>
 #include "functions.h"
 
 using namespace std;
@@ -9,12 +10,8 @@ const string FILE_NAME = "users.txt";
 int fileLengthInLines = 0;
 const string ENTERMINUS1TOEXIT="Enter -1 if you want to go back";
 
-void emergencyStop(string*usenames, string*passwords,double* balances){
-    exitApp(usenames,passwords,balances);
-    exit(-1);
-}
 
-int startingMenu() {
+void startingMenu() {
 
     string *usernames = new string[fileLengthInLines + 1];
     string *passwords = new string[fileLengthInLines + 1];
@@ -64,21 +61,29 @@ int startingMenu() {
     delete[] passwords;
     delete[] balances;
 
-    exit(69 );
+    exit(0 );
 
 }
 int main(){
 
     fileLengthInLines= fileLength();
 
-    string *usernames = new string[fileLengthInLines + 1];
-    string *passwords = new string[fileLengthInLines + 1];
-    double *balances = new double[fileLengthInLines + 1] ;
-    fillInformation(usernames, passwords, balances);
+    cout<<CENTERINGTABS<<"#      #         #####           ####"<<endl;
+    cout<<CENTERINGTABS<<"#     #          #    #         #    #"<<endl;
+    cout<<CENTERINGTABS<<"#    #           #    #         #"<<endl;
+    cout<<CENTERINGTABS<<"#   #            #    #         #"<<endl;
+    cout<<CENTERINGTABS<<"#  #             #   #          #"<<endl;
+    cout<<CENTERINGTABS<<"# #              #  #           #"<<endl;
+    cout<<CENTERINGTABS<<"#                # #            #"<<endl;
+    cout<<CENTERINGTABS<<"# #              #  #           #"<<endl;
+    cout<<CENTERINGTABS<<"#  #             #   #          #"<<endl;
+    cout<<CENTERINGTABS<<"#   #            #    #         #"<<endl;
+    cout<<CENTERINGTABS<<"#    #           #    #         #"<<endl;
+    cout<<CENTERINGTABS<<"#     #          #    #         #    #"<<endl;
+    cout<<CENTERINGTABS<<"#      #         #####           ####"<<endl;
 
     startingMenu();
 
-    exitApp(usernames,passwords,balances);
 
     return 0;
 
@@ -157,7 +162,7 @@ void Login(string *usernames, string *passwords, double *balances) {
     if(password=="-1"){
         return;
     }
-    cout << hasher(password) << " " << to_string(hasher(password)) << endl;
+    //cout << hasher(password) << " " << to_string(hasher(password)) << endl;
 
     string hashedPassword = to_string(hasher(password));
 
@@ -165,7 +170,7 @@ void Login(string *usernames, string *passwords, double *balances) {
         fileUsername = usernames[i];
         filePassword = passwords[i];
         if (username == fileUsername) {
-            cout << hashedPassword << endl << filePassword << endl;
+            //cout << hashedPassword << endl << filePassword << endl;
             if (filePassword == hashedPassword) {
                 cout << "Login succesful";
                 userIndex = i;
@@ -188,7 +193,6 @@ void Registration(string *usernames, string *passowords, double *balances) {
     string username, password, repeatPassword;
     hash<string> hasher;
 
-    //cout<<CENTERINGTABS<<ENTERMINUS1TOEXIT;
 
     cout << CENTERINGTABS << "Enter the username you want to use: " << endl;
     cout<<CENTERINGTABS<<"The username cant contain spaces "<<endl;
@@ -263,9 +267,9 @@ void Withdraw(int userIndex, string *usernames, string *passowords, double *bala
         cout << "Enter a valid amount" << endl;
         cin >> withdrawAmount;
     }
-    while (balance + 10000 < withdrawAmount) {
+    if (balance + 10000 < withdrawAmount) {
         cout << "You dont have that much money." << endl;
-        cin >> withdrawAmount;
+        Menu(userIndex,usernames,passowords,balances);
     }
     balance -= withdrawAmount;
     balances[userIndex] = balance;
@@ -508,7 +512,7 @@ bool passwordChecker(string password) {
         } else if (temp >= 'A' && temp <= 'Z') {
             upperCaseCounter++;
         } else if (temp == '!' || temp == '@' || temp == '#' || temp == '$' || temp == '%' || temp == '^' ||
-                   temp == '&' || temp == '*') {
+                   temp == '&' || temp == '*'||temp == '_') {
             symbolCounter++;
         } else if (temp >= '0' && temp <= '9') {
         } else {
@@ -532,30 +536,6 @@ bool isUsernameFree(const string* usernames,const string username){
     }
     return true;
 }
-
-bool doesUsernameContainSpaces(const string username){
-
-    for(char ch: username){
-        if(ch==' '){
-            return false;
-        }
-    }
-
-}
-
-//bool isUsernameFree(const string username) {
-//
-//    ifstream file1(FILE_NAME);
-//    string fileUsername, password, balance;
-//    string line;
-//    while (getline(file1, line)) {
-//        separateTheLine(line, fileUsername, password, balance);
-//        if (fileUsername == username) {
-//            return false;
-//        }
-//    }
-//    return true;
-//}
 
 int passwordLength(string password) {
     int length = 0;
