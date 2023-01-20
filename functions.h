@@ -1,3 +1,17 @@
+/**
+*
+* Solution to course project # 3
+* Introduction to programming course
+* Faculty of Mathematics and Informatics of Sofia University
+* Winter semester 2022/2023
+*
+* @author Martin Petrov Marinkov
+* @idnumber 5MI0600202
+* @compiler gcc (I use CLion)
+*
+* headerfile with function declarations
+*
+*/
 #ifndef FUNCTIONS_H
 #define FUNCTIONS_H
 #include <string>

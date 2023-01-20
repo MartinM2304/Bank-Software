@@ -5,7 +5,7 @@
 * Faculty of Mathematics and Informatics of Sofia University
 * Winter semester 2022/2023
 *
-* @author Martin Petrov Matinkov
+* @author Martin Petrov Marinkov
 * @idnumber 5MI0600202
 * @compiler gcc (I use CLion)
 *
@@ -35,34 +35,30 @@ void startingMenu() {
     fillInformation(usernames, passwords, balances);
 
     char choice;
+    string choiceString;
 
     while (choice != 'q' && choice != 'Q') {
 
-        system("cls");
+        cout<<endl;
         cout << CENTERING_TABS << "Please choose one of the following: " << endl;
         cout << CENTERING_TABS << "L - login" << endl;
         cout << CENTERING_TABS << "R - register" << endl;
         cout << CENTERING_TABS << "Q - quit" << endl;
 
-        cin >> choice;
+        cin >> choiceString;
+        choice= choiceString[0];
 
         switch (choice) {
             case 'L':
-                Login(usernames, passwords, balances);
-                break;
             case 'l':
                 Login(usernames, passwords, balances);
                 break;
             case 'R':
-                Registration(usernames, passwords, balances);
-                break;
             case 'r':
                 Registration(usernames, passwords, balances);
                 break;
-            case 'q':
-                cout << "Thank you for the use! "<< endl;
-                break;
             case 'Q':
+            case 'q':
                 cout << "Thank you for the use! "<< endl;
                 break;
             default:
@@ -109,6 +105,7 @@ int main() {
 void Menu(int userIndex, string *usernames, string *passowords, double *balances) {
 
     char choice;
+    string choiceString;
 
     cout << endl;
     cout << CENTERING_TABS << "Please choose one of the following:" << endl;
@@ -118,41 +115,36 @@ void Menu(int userIndex, string *usernames, string *passowords, double *balances
     cout << CENTERING_TABS << "C - cancel account" << endl;
     cout << CENTERING_TABS << "L - logout" << endl;
 
-    cin >> choice;
+    cin >> choiceString;
+    choice= choiceString[0];
 
     switch (choice) {
         case 'D':
-            Deposit(userIndex, usernames, passowords, balances);
-            break;
         case 'd':
             Deposit(userIndex, usernames, passowords, balances);
             break;
+
         case 'W':
-            Withdraw(userIndex, usernames, passowords, balances);
-            break;
         case 'w':
             Withdraw(userIndex, usernames, passowords, balances);
             break;
+
         case 'T':
-            Transfer(userIndex, usernames, passowords, balances);
-            break;
         case 't':
             Transfer(userIndex, usernames, passowords, balances);
             break;
+
         case 'C':
-            DeleteAccount(userIndex, usernames, passowords, balances);
-            break;
         case 'c':
             DeleteAccount(userIndex, usernames, passowords, balances);
             break;
+
         case 'L':
-            exitApp(usernames, passowords, balances);
-            startingMenu();
-            break;
         case 'l':
             exitApp(usernames, passowords, balances);
             startingMenu();
             break;
+
         default:
             cout << "Enter a valid letter";
             Menu(userIndex, usernames, passowords, balances);
@@ -161,8 +153,6 @@ void Menu(int userIndex, string *usernames, string *passowords, double *balances
 
 //Register and Login
 void Login(string *usernames, string *passwords, double *balances) {
-
-    system("cls");
 
     cout << CENTERING_TABS << ENTER_MINUS_1_TO_EXIT << endl;
 
@@ -206,7 +196,6 @@ void Login(string *usernames, string *passwords, double *balances) {
 
 void Registration(string *usernames, string *passowords, double *balances) {
 
-    system("cls");
     string username, password, repeatPassword;
     hash<string> hasher;
 
@@ -339,7 +328,7 @@ void Transfer(int userIndex, string *usernames, string *passowords, double *bala
 
             if(i == userIndex){
                 cout<<"You cant transfer to yourself"<<endl;
-                Transfer(userIndex,usernames,passowords,balances);
+                Menu(userIndex,usernames,passowords,balances);
             }
 
             balanceOfReciever = balances[i];
@@ -611,10 +600,16 @@ bool usernameContainOnlySpaces(string username){
 bool doesNumberContainLetters(string word){
     for(char ch:word){
         if(ch <='0'|| ch>='9'){
-            return false;
+            if(ch =='.'|| ch== ','){
+                continue;
+
+            }else
+            {
+            return true;
+            }
         }
     }
-    return true;
+    return false;
 }
 int passwordLength(string password) {
     int length = 0;
