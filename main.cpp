@@ -154,6 +154,7 @@ void Menu(int userIndex, string *usernames, string *passowords, double *balances
 //Register and Login
 void Login(string *usernames, string *passwords, double *balances) {
 
+    cout<<CENTERING_TABS<<"You chose login"<<endl;
     cout << CENTERING_TABS << ENTER_MINUS_1_TO_EXIT << endl;
 
     hash<string> hasher;
@@ -195,6 +196,9 @@ void Login(string *usernames, string *passwords, double *balances) {
 }
 
 void Registration(string *usernames, string *passowords, double *balances) {
+
+    cout<<CENTERING_TABS<<"You chose registration"<<endl;
+
 
     string username, password, repeatPassword;
     hash<string> hasher;
@@ -248,6 +252,8 @@ void Registration(string *usernames, string *passowords, double *balances) {
 //Menu Functions
 void Deposit(int userIndex, string *usernames, string *passowords, double *balances) {
 
+    cout<<CENTERING_TABS<<"You chose deposit"<<endl;
+
     double balance = balances[userIndex];
     double depositAmount;
     string depositAmountString;
@@ -275,6 +281,9 @@ void Deposit(int userIndex, string *usernames, string *passowords, double *balan
 }
 
 void Withdraw(int userIndex, string *usernames, string *passowords, double *balances) {
+
+    cout<<CENTERING_TABS<<"You chose withdraw"<<endl;
+
 
     double balance = balances[userIndex];
     double withdrawAmount;
@@ -306,6 +315,9 @@ void Withdraw(int userIndex, string *usernames, string *passowords, double *bala
 }
 
 void Transfer(int userIndex, string *usernames, string *passowords, double *balances) {
+
+    cout<<CENTERING_TABS<<"You chose transfer"<<endl;
+
 
     double transferAmount = 0;
     string transgerAmountString;
