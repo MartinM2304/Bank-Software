@@ -611,10 +611,9 @@ bool usernameContainOnlySpaces(string username){
 }
 bool doesNumberContainLetters(string word){
     for(char ch:word){
-        if(ch <='0'|| ch>='9'){
+        if(ch <'0'|| ch>'9'){
             if(ch =='.'|| ch== ','){
                 continue;
-
             }else
             {
             return true;
