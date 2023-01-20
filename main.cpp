@@ -34,7 +34,7 @@ void startingMenu() {
     double *balances = new double[fileLengthInLines + 1];
     fillInformation(usernames, passwords, balances);
 
-    char choice;
+    char choice=' ';
     string choiceString;
 
     while (choice != 'q' && choice != 'Q') {
@@ -180,7 +180,7 @@ void Login(string *usernames, string *passwords, double *balances) {
         filePassword = passwords[i];
         if (username == fileUsername) {
             if (filePassword == hashedPassword) {
-                cout << "Login succesful"<<endl;
+                cout << "Login successful"<<endl;
                 userIndex = i;
                 Menu(userIndex, usernames, passwords, balances);
             } else {
