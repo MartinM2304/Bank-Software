@@ -3,7 +3,7 @@
 
 int main();
 void Menu(int lineIndex);
-void Login(std::string*usernames,std::string*passowords,double*balances);
+void Login(std::string*usernames, std::string*passwords, double*balances);
 void Registration(std::string*usernames,std::string*passowords,double*balances);
 
 void fillInformation(std::string*usernames,std::string*passwords,double*balances);
@@ -23,6 +23,7 @@ double roundNumber(double a);
 
 bool passwordChecker(std::string password);
 bool isUsernameFree(std::string username);
+bool isUsernameFree(const std::string* usernames,const std::string username);
 int passwordLength(std::string password);
 
 #endif
