@@ -261,8 +261,16 @@ void Deposit(int userIndex, string *usernames, string *passowords, double *balan
 
     double balance = balances[userIndex];
     double depositAmount;
+    string depositAmountString;
     cout << "Enter the amount you want to deposit" << endl;
-    cin >> depositAmount;
+    cin >> depositAmountString;
+    while ( doesNumberContainLetters(depositAmountString)){
+        cout<<"The ammount cant contain letters"<<endl;
+        cin>>depositAmountString;
+    }
+
+    depositAmount= stringToDouble(depositAmountString);
+
     depositAmount = roundNumber(depositAmount);
 
 
@@ -281,8 +289,15 @@ void Withdraw(int userIndex, string *usernames, string *passowords, double *bala
 
     double balance = balances[userIndex];
     double withdrawAmount;
+    string withdrawAmountString;
     cout << "Enter the amount you want to withdraw" << endl;
-    cin >> withdrawAmount;
+    cin >> withdrawAmountString;
+
+    while ( doesNumberContainLetters(withdrawAmountString)){
+        cout<<"The ammount cant contain letters"<<endl;
+        cin>>withdrawAmountString;
+    }
+    withdrawAmount= stringToDouble(withdrawAmountString);
 
     withdrawAmount = roundNumber(withdrawAmount);
 
@@ -304,22 +319,40 @@ void Withdraw(int userIndex, string *usernames, string *passowords, double *bala
 void Transfer(int userIndex, string *usernames, string *passowords, double *balances) {
 
     double transferAmount = 0;
+    string transgerAmountString;
     string transferUsername, transferBalance;
     double balanceOfUser = balances[userIndex];
     double balanceOfReciever;
-    string UsernameYouWantToTransfer;
+    string usernameYouWantToTransfer;
 
     cout << "Enter the account you want to transfer money" << endl;
-    cin >> UsernameYouWantToTransfer;
+    cin >> usernameYouWantToTransfer;
+
+    if(usernameYouWantToTransfer == "-1"){
+        return;
+    }
 
     for (int i = 0; i < fileLengthInLines; i++) {
         transferUsername = usernames[i];
 
-        if (UsernameYouWantToTransfer == transferUsername) {
+        if (usernameYouWantToTransfer == transferUsername) {
+
+            if(i == userIndex){
+                cout<<"You cant transfer to yourself"<<endl;
+                Transfer(userIndex,usernames,passowords,balances);
+            }
+
             balanceOfReciever = balances[i];
 
             cout << "Enter the amount you want to transfer." << endl;
-            cin >> transferAmount;
+            cin >> transgerAmountString;
+
+            while ( doesNumberContainLetters(transgerAmountString)){
+                cout<<"The ammount cant contain letters"<<endl;
+                cin>>transgerAmountString;
+            }
+            transferAmount = stringToDouble(transgerAmountString);
+
             transferAmount = roundNumber(transferAmount);
 
             while (transferAmount <= 0) {
@@ -575,7 +608,14 @@ bool usernameContainOnlySpaces(string username){
     }
     return true;
 }
-
+bool doesNumberContainLetters(string word){
+    for(char ch:word){
+        if(ch <='0'|| ch>='9'){
+            return false;
+        }
+    }
+    return true;
+}
 int passwordLength(string password) {
     int length = 0;
     for (int i = 0; password[i] != '\0'; i++) {
