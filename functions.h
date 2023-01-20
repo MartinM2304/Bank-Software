@@ -1,8 +1,9 @@
 #ifndef FUNCTIONS_H
 #define FUNCTIONS_H
+#include <string>
+
 
 int main();
-void Menu(int lineIndex);
 void Login(std::string*usernames, std::string*passwords, double*balances);
 void Registration(std::string*usernames,std::string*passowords,double*balances);
 
@@ -21,9 +22,10 @@ int fileLength();
 int numbersAfterComa(std::string str);
 double roundNumber(double a);
 
+bool doesNumberContainLetters(std::string word);
 bool passwordChecker(std::string password);
-bool isUsernameFree(std::string username);
 bool isUsernameFree(const std::string* usernames,const std::string username);
+bool usernameContainOnlySpaces(std::string username);
 int passwordLength(std::string password);
 
 #endif
